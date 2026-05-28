@@ -1,0 +1,53 @@
+
+# ----------------------------------------------------------------------
+# 1. CORS & HEADERS
+# ----------------------------------------------------------------------
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+</IfModule>
+
+# ----------------------------------------------------------------------
+# 2. INCREASE UPLOAD LIMITS (Fixes Protocol Error)
+# ----------------------------------------------------------------------
+LimitRequestBody 52428800
+
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 50M
+    php_value post_max_size 50M
+    php_value memory_limit 256M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+</IfModule>
+
+# ----------------------------------------------------------------------
+# 3. cPANEL / PASSENGER SETUP
+# ----------------------------------------------------------------------
+# DO NOT use "RewriteRule ... http://localhost:5000" in cPanel!
+# Passenger manages the connection automatically.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # A. API & Server Routes -> Let them fall through to Node.js
+    # If the URL starts with "api" or is "send-application", 
+    # we STOP rewriting and let Apache/Passenger handle it.
+    RewriteRule ^api/ - [L]
+    RewriteRule ^send-application$ - [L]
+    RewriteRule ^uploads/ - [L]
+
+    # B. FILES -> Serve existing files (CSS, JS, Images) directly
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule . - [L]
+
+    # C. REACT CLIENT ROUTING -> Send everything else to index.html
+    # This enables refreshing pages like /about without 404
+    # ONLY IF index.html exists in this directory.
+    RewriteRule ^index\.html$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.html [L]
+</IfModule>

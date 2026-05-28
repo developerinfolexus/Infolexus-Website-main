@@ -1,0 +1,66 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, BookOpen } from 'lucide-react';
+
+const TrainingServiceHero = ({ service }) => {
+    return (
+        <section className="relative min-h-[85vh] flex items-center overflow-hidden bg-slate-950 pt-20">
+            {/* Background Image & Overlays */}
+            <div className="absolute inset-0 z-0 bg-slate-950">
+                {service.image ? (
+                    <img
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full h-full object-cover object-center opacity-100"
+                    />
+                ) : (
+                    // Fallback gradient if no image
+                    <div className="w-full h-full bg-gradient-to-br from-blue-900 to-slate-900" />
+                )}
+                {/* Full Dark Overlay for text readability */}
+                <div className="absolute inset-0 bg-slate-950/80" />
+                {/* Gradient for extra depth */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/50" />
+            </div>
+
+            <div className="container mx-auto px-6 md:px-12 relative z-10 w-full">
+                <div className="max-w-4xl">
+                    <motion.div
+                        initial={{ opacity: 0, x: -50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-bold tracking-widest uppercase mb-6 backdrop-blur-md">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                            </span>
+                            Professional Training
+                        </div>
+
+                        <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight leading-tight">
+                            {service.title}
+                        </h1>
+
+                        <p className="text-xl text-slate-400 leading-relaxed mb-10 max-w-2xl">
+                            {service.tagline || service.subtitle}
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row items-center justify-start gap-6">
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => document.getElementById('details').scrollIntoView({ behavior: 'smooth' })}
+                                className="px-8 py-4 rounded-full bg-gradient-to-r from-blue-500 to-sky-600 hover:from-sky-600 hover:to-blue-500 text-white font-bold transition-all shadow-lg shadow-blue-500/25 flex items-center gap-3"
+                            >
+                                View Curriculum <BookOpen size={20} />
+                            </motion.button>
+                        </div>
+                    </motion.div>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+export default TrainingServiceHero;

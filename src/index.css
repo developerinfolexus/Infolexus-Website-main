@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans antialiased text-white bg-brand-dark;
+    background-color: #040e4b;
+    /* Hardcoded fallback to match config */
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+}
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+@layer components {
+  /* ... (rest of CSS remains the same as it's utility based) */
+
+  /* Neon Border Card */
+  .neon-card {
+    @apply relative overflow-hidden bg-brand-surface border border-white/5 rounded-xl transition-all duration-300;
+  }
+
+  .neon-card:hover {
+    @apply border-brand-blue shadow-neon-blue -translate-y-2;
+  }
+
+  /* Specific Card Variants */
+  .card-hr {
+    @apply border-brand-blue/30;
+  }
+
+  .card-hr:hover {
+    border-color: #00A3FF;
+    box-shadow: 0 0 20px rgba(0, 163, 255, 0.3);
+  }
+
+  .card-it {
+    @apply border-brand-purple/30;
+  }
+
+  .card-it:hover {
+    border-color: #7B2CBF;
+    box-shadow: 0 0 20px rgba(123, 44, 191, 0.3);
+  }
+
+  /* Buttons */
+  .btn-gradient-blue {
+    @apply px-8 py-3 rounded-lg bg-btn-hr text-white font-bold tracking-wide transition-all duration-300 hover:brightness-110 hover:shadow-neon-blue;
+  }
+
+  .btn-gradient-purple {
+    @apply px-8 py-3 rounded-lg bg-btn-it text-white font-bold tracking-wide transition-all duration-300 hover:brightness-110 hover:shadow-neon-purple;
+  }
+}
